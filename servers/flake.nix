@@ -1,47 +1,24 @@
 {
-  description = "Your new nix config";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+  inputs.disko.url = "github:nix-community/disko";
+  inputs.disko.inputs.nixpkgs.follows = "nixpkgs";
 
-  inputs = {
-    # Nixpkgs
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
-
-    # TODO: Add any other flake you might need
-    # hardware.url = "github:nixos/nixos-hardware";
-
-    # Shameless plug: looking for a way to nixify your themes and make
-    # everything match nicely? Try nix-colors!
-    # nix-colors.url = "github:misterio77/nix-colors";
-  };
-
-  outputs = {
-    self,
-    nixpkgs,
-    home-manager,
-    ...
-  } @ inputs: let
-    inherit (self) outputs;
-  in {
-    # NixOS configuration entrypoint
-    # Available through 'nixos-rebuild --flake .#your-hostname'
-    nixosConfigurations = {
-      # FIXME replace with your hostname
-      barbarian = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs;};
-        # > Our main nixos configuration file <
-        modules = [./barbarian.configuration.nix];
+  outputs = { nixpkgs, disko, ... }:
+    {
+      nixosConfigurations.barbarian = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          disko.nixosModules.disko
+          { disko.devices.disk.disk1.device = "/dev/sda"; }
+          ./barbarian.configuration.nix
+        ];
       };
+      # nixosConfigurations.hetzner-cloud-aarch64 = nixpkgs.lib.nixosSystem {
+      #   system = "aarch64-linux";
+      #   modules = [
+      #     disko.nixosModules.disko
+      #     ./configuration.nix
+      #   ];
+      # };
     };
-
-    # # Standalone home-manager configuration entrypoint
-    # # Available through 'home-manager --flake .#your-username@your-hostname'
-    # homeConfigurations = {
-    #   # FIXME replace with your username@hostname
-    #   "your-username@your-hostname" = home-manager.lib.homeManagerConfiguration {
-    #     pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-    #     extraSpecialArgs = {inherit inputs outputs;};
-    #     # > Our main home-manager configuration file <
-    #     modules = [./home-manager/home.nix];
-    #   };
-    # };
-  };
 }
