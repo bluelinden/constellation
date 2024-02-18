@@ -1,5 +1,7 @@
-{
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+
+
+rec {
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
   inputs.disko.url = "github:nix-community/disko";
   inputs.disko.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -9,9 +11,12 @@
         system = "x86_64-linux";
         modules = [
           disko.nixosModules.disko
-          { disko.devices.disk.disk1.device = "/dev/sda"; }
+          { system.build.diskoScript = ./disk-config.nix; }
           ./barbarian.configuration.nix
         ];
+        specialArgs = {
+          inherit inputs;
+        };
       };
       # nixosConfigurations.hetzner-cloud-aarch64 = nixpkgs.lib.nixosSystem {
       #   system = "aarch64-linux";
