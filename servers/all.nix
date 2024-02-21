@@ -1,9 +1,6 @@
 { pkgs, ... }:
 
 {
-  services.greetd = {
-    enable = true;
-  };
 
     nixpkgs = {
     config = {
@@ -11,6 +8,8 @@
       allowUnfree = true;
     };
   };
+
+  # system.copySystemConfiguration = true;
 
 
   nix.settings = {
@@ -20,11 +19,16 @@
     auto-optimise-store = true;
   };
 
+
+
   systemd.targets.sleep.enable = false;
   systemd.targets.suspend.enable = false;
   systemd.targets.hibernate.enable = false;
   systemd.targets.hybrid-sleep.enable = false;
 
+  networking.nameservers = [ "1.1.1.1" "1.0.0.1" ];
+
+  networking.networkmanager.enable = true;
 
   nix.settings.trusted-users = [ "root" "blue" "@wheel" ];
   security.sudo.wheelNeedsPassword = false;
@@ -33,7 +37,7 @@
     # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.blue = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "libvirtd" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "libvirtd" "networkmanager" ]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [
        tree
        micro

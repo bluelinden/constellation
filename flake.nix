@@ -2,6 +2,7 @@
   inputs = {
     u-nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     s-nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
+
   };
 
   outputs = inputs:
@@ -11,6 +12,7 @@
     };
     barbarianSystem = import ./servers/barbarian.configuration.nix {
       pkgs = custom-nixpkgs.stable;
+      upkgs = custom-nixpkgs.unstable;
     };
     in {
       colmena = {
@@ -18,7 +20,7 @@
           nixpkgs = custom-nixpkgs.stable;
         };
         barbarian = {
-            deployment.targetHost = "192.168.1.169";
+            deployment.targetHost = "192.168.1.244";
             deployment.targetUser = "blue";
         } // barbarianSystem;
       };
