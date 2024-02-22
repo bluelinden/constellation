@@ -8,7 +8,7 @@
   imports = [
     ./hw/barbarian.hardware.nix
     ./all.nix
-    ./services/ghost/docker-compose.nix
+    ../services/ghost/docker-compose.nix
     # ./shared/libvirtd-bridge.nix
   ];
 

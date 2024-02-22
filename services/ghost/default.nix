@@ -1,8 +1,6 @@
 # Auto-generated using compose2nix v0.1.7.
 { pkgs, lib, ... }:
 
-let secrets = import ./secrets.nix {};
-in
 {
   # Runtime
   virtualisation.podman = {
@@ -19,9 +17,9 @@ in
   # Containers
   virtualisation.oci-containers.containers."ghost-db" = {
     image = "mysql:8.0";
-    environment = {
-      MYSQL_ROOT_PASSWORD = secrets.db-connection.password;
-    };
+    environmentFiles = [
+      "/etc/blkeys/mysql-pass.env"
+    ];
     volumes = [
       "/srv/ghost/db:/var/lib/mysql:rw"
     ];
@@ -53,9 +51,8 @@ in
     environment = {
       database__client = "mysql";
       database__connection__database = "ghost-content";
-      database__connection__host = secrets.db-connection.host;
-      database__connection__password = secrets.db-connection.password;
-      database__connection__user = secrets.db-connection.user;
+      database__connection__host = "db";
+      database__connection__user = "root";
       url = "https://bluelinden.art";
       server__host = "127.0.0.1";
       server__port = "2368";
@@ -63,11 +60,11 @@ in
       admin__url = "https://ghost.bluelinden.art";
       mail__transport = "SMTP";
       mail__options__service = "Mailgun";
-      mail__options__auth__user = secrets.mailgun.email;
-      mail__options__auth__pass = secrets.mailgun.password;
-
-
     };
+    environmentFiles = [
+      "/etc/blkeys/ghost-keys.env"
+      "/etc/blkeys/ghost-db.env"
+    ];
     volumes = [
       "/srv/ghost/content:/var/lib/ghost/content:rw"
     ];
