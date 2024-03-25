@@ -44,4 +44,16 @@
     ];
   };
 
+  services.tailscale = {
+    enable = true;
+    package = pkgs.tailscale;
+    openFirewall = true;
+    interfaceName = "bluenet0";
+  };
+  networking.firewall.trustedInterfaces = [ "bluenet0" ];
+
+  environment.systemPackages = with pkgs; [
+    nodejs
+  ];
+
 }

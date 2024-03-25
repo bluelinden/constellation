@@ -19,7 +19,7 @@
           nixpkgs = custom-nixpkgs.stable;
         };
         barbarian = {
-          deployment.targetHost = "192.168.1.244";
+          deployment.targetHost = "100.69.42.7";
           deployment.targetUser = "blue";
           deployment.keys = {
             # ghost-keys = {

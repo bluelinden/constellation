@@ -29,6 +29,7 @@
       "--network=ghost-default"
     ];
   };
+
   systemd.services."podman-ghost-db" = {
     serviceConfig = {
       Restart = lib.mkOverride 500 "always";
@@ -46,6 +47,7 @@
       "podman-compose-ghost-root.target"
     ];
   };
+
   virtualisation.oci-containers.containers."ghost-ghost" = {
     image = "ghost:5-alpine";
     environment = {
@@ -54,11 +56,12 @@
       database__connection__host = "db";
       database__connection__user = "root";
       url = "https://bluelinden.art";
-      server__host = "127.0.0.1";
+      server__host = "0.0.0.0";
       server__port = "2368";
       enableDeveloperExperiments = "true";
       admin__url = "https://ghost.bluelinden.art";
       mail__transport = "SMTP";
+      mail__from = "mailer@mailer.bluelinden.art";
       mail__options__service = "Mailgun";
     };
     environmentFiles = [
@@ -69,7 +72,7 @@
       "/srv/ghost/content:/var/lib/ghost/content:rw"
     ];
     ports = [
-      "8080:2368/tcp"
+      "2368:2368/tcp"
     ];
     log-driver = "journald";
     extraOptions = [

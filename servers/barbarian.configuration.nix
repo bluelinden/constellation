@@ -8,7 +8,7 @@
   imports = [
     ./hw/barbarian.hardware.nix
     ./all.nix
-    ../services/ghost/docker-compose.nix
+    ../services/ghost/default.nix
     # ./shared/libvirtd-bridge.nix
   ];
 
@@ -57,35 +57,39 @@
     usbutils
   ];
 
-  # FIXME: enable this!! figure out why it's #brocken
-  networking.firewall = {
-    enable = false;
-    extraCommands = ''
-      # iptables -N ACCEPT_TCP_UDP
-      iptables -A ACCEPT_TCP_UDP -p tcp -j ACCEPT
-      iptables -A ACCEPT_TCP_UDP -p udp -j ACCEPT
+  # services.mysql = {
+  #   enable = true;
+  #   package = pkgs.mysql;
+  # };
+
+  # networking.firewall = {
+  #   enable = false;
+  #   extraCommands = ''
+  #     # iptables -N ACCEPT_TCP_UDP
+  #     iptables -A ACCEPT_TCP_UDP -p tcp -j ACCEPT
+  #     iptables -A ACCEPT_TCP_UDP -p udp -j ACCEPT
 
 
 
-      iptables -A nixos-fw -d 192.168.1.41 -j ACCEPT_TCP_UDP
+  #     iptables -A nixos-fw -d 192.168.1.41 -j ACCEPT_TCP_UDP
 
       
-      iptables -t nat -A PREROUTING -d 192.168.1.41 -p tcp -m tcp --dport 1:65535 -m comment --comment "Home Assistant Port Forwarding" -j DNAT --to-destination 192.168.122.70:1-65535
-      iptables -t nat -A PREROUTING -d 192.168.1.41 -p udp -m udp --dport 1:65535 -m comment --comment "Home Assistant Port Forwarding" -j DNAT --to-destination 192.168.122.70:1-65535
-    '';
-  };
+  #     iptables -t nat -A PREROUTING -d 192.168.1.41 -p tcp -m tcp --dport 1:65535 -m comment --comment "Home Assistant Port Forwarding" -j DNAT --to-destination 192.168.122.70:1-65535
+  #     iptables -t nat -A PREROUTING -d 192.168.1.41 -p udp -m udp --dport 1:65535 -m comment --comment "Home Assistant Port Forwarding" -j DNAT --to-destination 192.168.122.70:1-65535
+  #   '';
+  # };
 
-  systemd.services.openHassioPort = {
-    enable = true;
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      Type = "oneshot";
-    };
-    script = ''
-      /run/current-system/sw/bin/iptables -t nat -A PREROUTING -d 192.168.1.41 -p tcp -m tcp --dport 1:65535 -m comment --comment "Home Assistant Port Forwarding" -j DNAT --to-destination 192.168.122.70:1-65535
-      /run/current-system/sw/bin/iptables -t nat -A PREROUTING -d 192.168.1.41 -p udp -m udp --dport 1:65535 -m comment --comment "Home Assistant Port Forwarding" -j DNAT --to-destination 192.168.122.70:1-65535
-    '';
-  };
+  # systemd.services.openHassioPort = {
+  #   enable = true;
+  #   wantedBy = [ "multi-user.target" ];
+  #   serviceConfig = {
+  #     Type = "oneshot";
+  #   };
+  #   script = ''
+  #     /run/current-system/sw/bin/iptables -t nat -A PREROUTING -d 192.168.1.41 -p tcp -m tcp --dport 1:65535 -m comment --comment "Home Assistant Port Forwarding" -j DNAT --to-destination 192.168.122.70:1-65535
+  #     /run/current-system/sw/bin/iptables -t nat -A PREROUTING -d 192.168.1.41 -p udp -m udp --dport 1:65535 -m comment --comment "Home Assistant Port Forwarding" -j DNAT --to-destination 192.168.122.70:1-65535
+  #   '';
+  # };
 
   networking.defaultGateway  = "192.168.1.1";
   networking.interfaces."enp1s0".ipv4 = {
