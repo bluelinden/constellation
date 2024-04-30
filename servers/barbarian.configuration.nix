@@ -1,14 +1,15 @@
 # This is your system's configuration file.
 # Use this to configure your system environment (it replaces /etc/nixos/configuration.nix)
-{
-  pkgs,
-  ...
+{ pkgs
+, lib
+, ...
 }: {
   # You can import other NixOS modules here
   imports = [
     ./hw/barbarian.hardware.nix
     ./all.nix
     ../services/ghost/default.nix
+    ../services/memos/default.nix
     # ./shared/libvirtd-bridge.nix
   ];
 
@@ -36,7 +37,7 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  
+
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -55,6 +56,9 @@
 
     # For lsusb
     usbutils
+
+    podman-compose
+    docker-compose
   ];
 
   # services.mysql = {
@@ -73,7 +77,7 @@
 
   #     iptables -A nixos-fw -d 192.168.1.41 -j ACCEPT_TCP_UDP
 
-      
+
   #     iptables -t nat -A PREROUTING -d 192.168.1.41 -p tcp -m tcp --dport 1:65535 -m comment --comment "Home Assistant Port Forwarding" -j DNAT --to-destination 192.168.122.70:1-65535
   #     iptables -t nat -A PREROUTING -d 192.168.1.41 -p udp -m udp --dport 1:65535 -m comment --comment "Home Assistant Port Forwarding" -j DNAT --to-destination 192.168.122.70:1-65535
   #   '';
@@ -91,7 +95,7 @@
   #   '';
   # };
 
-  networking.defaultGateway  = "192.168.1.1";
+  networking.defaultGateway = "192.168.1.1";
   networking.interfaces."enp1s0".ipv4 = {
     addresses = [
       {
@@ -116,10 +120,10 @@
   boot.kernel.sysctl = {
     "net.ipv4.ip_forward" = 1;
   };
-  
+
 
   # security.sudo.extraConfig = ''
-    # blue ALL=NOPASSWD: ALL
+  # blue ALL=NOPASSWD: ALL
   # '';
 
   services.cloudflared = {
@@ -138,6 +142,10 @@
       };
     };
   };
+
+  virtualisation.podman.enable = true;
+  virtualisation.podman.dockerCompat = true;
+  virtualisation.podman.dockerSocket.enable = true;
 
   services.plausible = {
     enable = true;
@@ -162,6 +170,11 @@
       # };
     };
   };
+
+  # fucky wucky nftables ghost podman workaround
+  networking.nftables.enable = true;
+
+  networking.firewall.interfaces.podman1.allowedUDPPorts = [ 53 ];
 
   system.stateVersion = "23.11"; # Did you read the comment?
 }

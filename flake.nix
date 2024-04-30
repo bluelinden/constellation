@@ -12,6 +12,7 @@
     barbarianSystem = import ./servers/barbarian.configuration.nix {
       pkgs = custom-nixpkgs.stable;
       upkgs = custom-nixpkgs.unstable;
+      lib = custom-nixpkgs.stable.lib;
     };
     in {
       colmena = {

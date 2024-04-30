@@ -44,6 +44,20 @@
     ];
   };
 
+  users.defaultUserShell = pkgs.zsh;
+
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    syntaxHighlighting.enable = true;
+    autosuggestions.enable = true;
+    interactiveShellInit = ''
+    printf '\eP$f{"hook": "SourcedRcFileForWarp", "value": { "shell": "zsh"}}\x9c'
+    '';
+  };
+
+
+
   services.tailscale = {
     enable = true;
     package = pkgs.tailscale;
@@ -54,6 +68,7 @@
 
   environment.systemPackages = with pkgs; [
     nodejs
+    mosh
   ];
 
 }
