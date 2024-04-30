@@ -31,7 +31,7 @@
   };
   systemd.services."podman-memos" = {
     serviceConfig = {
-      Restart = lib.mkOverride 500 "\"no\"";
+      Restart = lib.mkOverride 500 "no";
     };
     after = [
       "podman-network-memos_default.service"
