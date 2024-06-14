@@ -9,13 +9,15 @@
 }: {
   # You can import other NixOS modules here
   imports = [
-    ./hw/barbarian.hardware.nix
+    ./hw/ninja.hardware.nix
     ./all.nix
     ../services/ghost/default.nix
     ../services/memos/default.nix
     hardware
     # ./shared/libvirtd-bridge.nix
   ];
+
+  networking.hostName = "ninja";
 
   # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
   boot.loader.grub.enable = false;

@@ -25,7 +25,8 @@
     ];
     log-driver = "journald";
     extraOptions = [
-      "--network-alias=db"
+      "--network-alias=ghost-db"
+      "--ip=172.86.0.12"
       "--network=ghost-default"
     ];
   };
@@ -53,7 +54,7 @@
     environment = {
       database__client = "mysql";
       database__connection__database = "ghost-content";
-      database__connection__host = "db";
+      database__connection__host = "172.86.0.12";
       database__connection__user = "root";
       url = "https://bluelinden.art";
       server__host = "0.0.0.0";
@@ -76,8 +77,9 @@
     ];
     log-driver = "journald";
     extraOptions = [
-      "--network-alias=ghost"
+      "--network-alias=ghost-ghost"
       "--network=ghost-default"
+      "--ip=172.86.0.11"
     ];
   };
   systemd.services."podman-ghost-ghost" = {
@@ -107,7 +109,7 @@
       ExecStop = "${pkgs.podman}/bin/podman network rm -f ghost-default";
     };
     script = ''
-      podman network inspect ghost-default || podman network create ghost-default --opt isolate=true
+      podman network inspect ghost-default || podman network create ghost-default --subnet=172.86.0.0/16 --opt isolate=true
     '';
     partOf = [ "podman-compose-ghost-root.target" ];
     wantedBy = [ "podman-compose-ghost-root.target" ];

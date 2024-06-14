@@ -9,7 +9,7 @@
     ./hw/barbarian.hardware.nix
     ./all.nix
     ../services/ghost/default.nix
-    ../services/memos/default.nix
+    # ../services/memos/default.nix
     # ./shared/libvirtd-bridge.nix
   ];
 
@@ -133,8 +133,8 @@
     tunnels = {
       web = {
         ingress = {
-          "bluelinden.art" = "http://localhost:2368";
-          "ghost.bluelinden.art" = "http://localhost:2368";
+          "bluelinden.art" = "http://172.86.0.11:2368";
+          "ghost.bluelinden.art" = "http://172.86.0.11:2368";
           "analytics.bluelinden.art" = "http://localhost:8000";
         };
         credentialsFile = "/home/blue/.cloudflared/586d467c-b149-4a91-9fa2-4f6b17b289c6.json";
