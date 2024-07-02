@@ -63,6 +63,10 @@
                 url = "https://cdn.modrinth.com/data/uXXizFIs/versions/pguEMpy9/ferritecore-6.0.3-fabric.jar";
                 sha512 = "709ab6362dd1dcc432edd1e6c33aafba6f2d12be701bc14911107340f8ac2466779c4e57d8a303f0350c46478f23008e6eeca78e4eadedd0bdee63d4ae72ed9a";
               };
+              fabricLanguageKotlin = pkgs.fetchurl {
+                url = "https://cdn.modrinth.com/data/Ha28R6CL/versions/afsFajDC/fabric-language-kotlin-1.11.0%2Bkotlin.2.0.0.jar";
+                sha512 = "afc292e199869b982f18bbad208fed4a1d95b2f4292e0cc422ee8116d1da1d91132f554ac0608e7c87959d7ede37c20293133c811986dcfc80a8648f29d13028";
+              };
               silk = pkgs.fetchurl {
                 url = "https://cdn.modrinth.com/data/aTaCgKLW/versions/qm0TSoQL/silk-all-1.10.3.jar";
                 sha512 = "1763256c95c6a90e59737dc326349c281ec911078ea247a7f7be25e07c244b041ce2382beb643601efa967529be3412a5e5cf88ef19a130cdc1d67cd558c93d1";
