@@ -28,6 +28,7 @@
       "--network-alias=ghost-db"
       "--ip=172.86.0.12"
       "--network=ghost-default"
+      "--dns=1.1.1.1"
     ];
   };
 
@@ -80,6 +81,8 @@
       "--network-alias=ghost-ghost"
       "--network=ghost-default"
       "--ip=172.86.0.11"
+      "--dns=1.1.1.1"
+
     ];
   };
   systemd.services."podman-ghost-ghost" = {
@@ -109,7 +112,7 @@
       ExecStop = "${pkgs.podman}/bin/podman network rm -f ghost-default";
     };
     script = ''
-      podman network inspect ghost-default || podman network create ghost-default --subnet=172.86.0.0/16 --opt isolate=true
+      podman network inspect ghost-default || podman network create ghost-default --subnet=172.86.0.0/24 --opt isolate=true --dns=1.1.1.1
     '';
     partOf = [ "podman-compose-ghost-root.target" ];
     wantedBy = [ "podman-compose-ghost-root.target" ];

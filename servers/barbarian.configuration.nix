@@ -1,6 +1,7 @@
 # This is your system's configuration file.
 # Use this to configure your system environment (it replaces /etc/nixos/configuration.nix)
 { pkgs
+, inputs
 , lib
 , ...
 }: {
@@ -9,8 +10,15 @@
     ./hw/barbarian.hardware.nix
     ./all.nix
     ../services/ghost/default.nix
+    ../services/minecraft/default.nix
+    inputs.nix-minecraft-systemd.nixosModules.minecraft-servers
+
     # ../services/memos/default.nix
     # ./shared/libvirtd-bridge.nix
+  ];
+
+  nixpkgs.overlays = [
+    inputs.nix-minecraft.overlay
   ];
 
 

@@ -7,11 +7,21 @@
     servers = {
       bluesea = {
         enable = true;
-        package = pkgs.fabricServers.fabric_1_20_4;
+        openFirewall = true;
+        package = pkgs.fabricServers.fabric-1_20_4;
         serverProperties = {
           network-compression-threshold = 256;
-          simulation-distance = 8;
+          simulation-distance = 4;
           view-distance = 12;
+          enable-command-block = true;
+          enforce-whitelist = true;
+          motd = "the most non-oceanic sea server since 2024";
+          snooper-enabled = false;
+          white-list = true;
+        };
+        managementSystem = {
+          tmux.enable = false;
+          systemd-socket.enable = true;
         };
         symlinks = {
           mods = pkgs.linkFarmFromDrvs "mods"
@@ -20,6 +30,10 @@
               fabricApi = pkgs.fetchurl {
                 url = "https://cdn.modrinth.com/data/P7dR8mSH/versions/tAwdMmKY/fabric-api-0.97.1%2B1.20.4.jar";
                 sha512 = "161d5d8c67330cbda4ce825f92f23b96bfa884f881d5931c0375aba9ceef0f5e14b11c8607b5368fb6b72b796694a86a48271eecc3d9b63991f4b01352d66d5f";
+              };
+              collective = pkgs.fetchurl {
+                url = "https://cdn.modrinth.com/data/e0M1UDsY/versions/qXM06FG6/collective-1.20.4-7.64.jar";
+                sha512 = "5a3fe043db65c000d1f51372e3b40c6da09a60df45fd364d61d3ade7e3bddd708ab7958c36c2bccedc5d7cafc33ca81e99a8bf5ede7fa0a4103bf060d7f3c2df";
               };
               resourcefulLib = pkgs.fetchurl {
                 url = "https://cdn.modrinth.com/data/G1hIVOrD/versions/TiIWVg2u/resourcefullib-fabric-1.20.4-2.4.10.jar";
@@ -49,6 +63,10 @@
                 url = "https://cdn.modrinth.com/data/uXXizFIs/versions/pguEMpy9/ferritecore-6.0.3-fabric.jar";
                 sha512 = "709ab6362dd1dcc432edd1e6c33aafba6f2d12be701bc14911107340f8ac2466779c4e57d8a303f0350c46478f23008e6eeca78e4eadedd0bdee63d4ae72ed9a";
               };
+              silk = pkgs.fetchurl {
+                url = "https://cdn.modrinth.com/data/aTaCgKLW/versions/qm0TSoQL/silk-all-1.10.3.jar";
+                sha512 = "1763256c95c6a90e59737dc326349c281ec911078ea247a7f7be25e07c244b041ce2382beb643601efa967529be3412a5e5cf88ef19a130cdc1d67cd558c93d1";
+              };
               superhot = pkgs.fetchurl {
                 url = "https://cdn.modrinth.com/data/Jwqd7M4F/versions/kvfc7GPD/superhot-1.0.1.jar";
                 sha512 = "e49e161ca9dcb03ae98652f164abb94ba63e621573a9eebded38d5624687c7ba9c49b336bdaf4a98408882afa3d739f6859312fe1a9d31b9a771a882c59ee524";
@@ -60,6 +78,42 @@
               dropsIntoShulker = pkgs.fetchurl {
                 url = "https://cdn.modrinth.com/data/Pk6THAjp/versions/J6x2nt3D/drops-into-shulker-1.2.3.jar";
                 sha512 = "123965a4f008b39823e68d4834af1fd53b2f2006a908cde05fe48a96901c42f07da1cec0779abaae9064b727e9f5e6c5a7bc33e9f722159a08d35bf4b1f5bc63";
+              };
+              chunky = pkgs.fetchurl {
+                url = "https://cdn.modrinth.com/data/fALzjamp/versions/NHWYq9at/Chunky-1.3.146.jar";
+                sha512 = "9dbb82993302a8dfbe6ce1f46a051d72b5ada924424f4e23674ce660d209257584159a33248fa9247793e9ba03d3a117299ce1ff6685f06a7fb87c96504459aa";
+              };
+              doubleDoors = pkgs.fetchurl {
+                url = "https://cdn.modrinth.com/data/JrvR9OHr/versions/xY8NOS7J/doubledoors-1.20.4-5.8.jar";
+                sha512 = "16bd6079b0175bbc4cc378342269b31d792d2f2a5803f3c05fce61931e674d9bdf0e471ea4d221d2d61e467c1072bb138912ddf1cbd8d87953956d0fd4e29d8c";
+              };
+              vanish = pkgs.fetchurl {
+                url = "https://cdn.modrinth.com/data/UL4bJFDY/versions/H4yFnOYs/vanish-1.5.4%2B1.20.4.jar";
+                sha512 = "b747d6d8d80e3b3a63248e9e463e6308a025891a08d5a7ca1b10416790b7d03c887c919502943ddea871cf97a0d1bb83334a396cb6e90ac45225a92d1ecbaa5a";
+              };
+              xaerosMinimap = pkgs.fetchurl {
+                url = "https://cdn.modrinth.com/data/1bokaNcj/versions/ebLQ6HBv/Xaeros_Minimap_24.2.0_Fabric_1.20.4.jar";
+                sha512 = "aa91213b1d72b381d0135acf21e6f02584a92ea550206bd825bc4ddc79a75378dfa8fbc990479d80e02d1d0fd9f899a3ff93d46e77d252448686456dc62be6a7";
+              };
+              xaerosWorldMap = pkgs.fetchurl {
+                url = "https://cdn.modrinth.com/data/NcUtCpym/versions/jEhoJmNF/XaerosWorldMap_1.38.8_Fabric_1.20.4.jar";
+                sha512 = "6ba1369435e9fa2f463eff8e70cb5d389c81971c4fa90bc2404cdf875e95cae6293171985732693222d7c2efdc37d0bc247f0537be1b8cfde5a6c8e90a962209";
+              };
+              geyser = pkgs.fetchurl {
+                url = "https://cdn.modrinth.com/data/wKkoqHrH/versions/WZydmEJv/geyser-fabric-2.2.3-SNAPSHOT%2Bbuild.582.jar";
+                sha512 = "573fad0d2c4bd42303ec05104c9d9acf2886e0f196c0346ef1f81481f4822b9fde073af0683af125b0b84824c6eb9399fae5e10e0bf3f0e30b75c4f8cadd01a7";
+              };
+              floodgate = pkgs.fetchurl {
+                url = "https://cdn.modrinth.com/data/bWrNNfkb/versions/zUrRGwbT/floodgate-fabric-2.2.0-SNAPSHOT%2Bbuild.18.jar";
+                sha512 = "8916113c6256f1cafa21fa637717f1457d63d191ba56377aed4caa71afd3a49925809a4546e25bcc24f7167085668779e52d75606d8212ec45d82a98f5b65fa1";
+              };
+              unloadedActivity = pkgs.fetchurl {
+                url = "https://cdn.modrinth.com/data/Oo4rJCDP/versions/Cb6q6J0E/unloadedactivity-v0.5.4%2B1.20.3-1.20.4.jar";
+                sha512 = "718e7971d519b96194141920aa0bdf64a7a30c271c08e9a170475f7a445df6e3ce0f15911da855bacb1c540ea5d670c0e1fc08266cad6e184dfc4eb5bbab3f4b";
+              };
+              veinMiner = pkgs.fetchurl {
+                url = "https://cdn.modrinth.com/data/OhduvhIc/versions/KTrObKTw/Veinminer-2.0.4.jar";
+                sha512 = "6e924204246c53ec49f5f1d1a9fdaff7f64d18cbe53cf9cb44f0fb94c99bdcbbcf55bfa6433072895faf4d0800be8236cc5e61bd0dc6ac4a868e06928dee1cc7";
               };
 
             });
@@ -85,5 +139,4 @@
       };
     };
   };
-};
 }

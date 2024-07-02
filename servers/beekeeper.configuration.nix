@@ -94,26 +94,26 @@
   # };
 
   networking.defaultGateway = "192.168.1.1";
-  networking.interfaces."enp1s0".ipv4 = {
-    addresses = [
-      {
-        address = "192.168.1.50";
-        prefixLength = 24;
-      }
-    ];
-    routes = [
-      {
-        address = "192.168.1.0";
-        via = "192.168.1.1";
-        prefixLength = 24;
-      }
-      # {
-      #   address = "192.168.122.0";
-      #   via = "192.168.122.1";
-      #   prefixLength = 24;
-      # }
-    ];
-  };
+  # networking.interfaces."enp1s0".ipv4 = {
+  #   addresses = [
+  #     {
+  #       address = "192.168.1.50";
+  #       prefixLength = 24;
+  #     }
+  #   ];
+  #   routes = [
+  #     {
+  #       address = "192.168.1.0";
+  #       via = "192.168.1.1";
+  #       prefixLength = 24;
+  #     }
+  #     # {
+  #     #   address = "192.168.122.0";
+  #     #   via = "192.168.122.1";
+  #     #   prefixLength = 24;
+  #     # }
+  #   ];
+  # };
 
   boot.kernel.sysctl = {
     "net.ipv4.ip_forward" = 1;
@@ -171,6 +171,28 @@
 
   # fucky wucky nftables ghost podman workaround
   networking.nftables.enable = true;
+
+  hardware.opengl.extraPackages = with pkgs; [ intel-media-driver intel-ocl vaapiIntel ];
+
+  services.cage = {
+    enable = true;
+    user = "dashy";
+    program = "${pkgs.havoc}/bin/havoc ${pkgs.genact}/bin/genact";
+
+    # environment = {
+    #   XCURSOR_PATH = "${pkgs.google-cursor}/share/icons/GoogleDot-Black/cursors";
+    #   XCURSOR_SIZE = "28";
+    # };
+    extraArguments = [ "-sd" ];
+  };
+
+  users.users.dashy = {
+    packages = [
+      pkgs.ungoogled-chromium
+    ];
+    isNormalUser = true;
+
+  };
 
   # networking.firewall.interfaces.podman1.allowedUDPPorts = [ 53 ];
 

@@ -2,7 +2,7 @@
 
 {
 
-    nixpkgs = {
+  nixpkgs = {
     config = {
       # Disable if you don't want unfree packages
       allowUnfree = true;
@@ -26,6 +26,13 @@
   systemd.targets.hibernate.enable = false;
   systemd.targets.hybrid-sleep.enable = false;
 
+  systemd.sleep.extraConfig = ''
+    AllowSuspend=no
+    AllowHibernation=no
+    AllowHybridSleep=no
+    AllowSuspendThenHibernate=no
+  '';
+
   networking.nameservers = [ "1.1.1.1" "1.0.0.1" ];
 
   networking.networkmanager.enable = true;
@@ -34,13 +41,13 @@
   security.sudo.wheelNeedsPassword = false;
   services.openssh.enable = true;
 
-    # Define a user account. Don't forget to set a password with ‘passwd’.
+  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.blue = {
     isNormalUser = true;
     extraGroups = [ "wheel" "libvirtd" "networkmanager" ]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [
-       tree
-       micro
+      tree
+      micro
     ];
   };
 
@@ -52,7 +59,7 @@
     syntaxHighlighting.enable = true;
     autosuggestions.enable = true;
     interactiveShellInit = ''
-    printf '\eP$f{"hook": "SourcedRcFileForWarp", "value": { "shell": "zsh"}}\x9c'
+      printf '\eP$f{"hook": "SourcedRcFileForWarp", "value": { "shell": "zsh"}}\x9c'
     '';
   };
 
@@ -69,6 +76,9 @@
   environment.systemPackages = with pkgs; [
     nodejs
     mosh
+    pciutils
+    htop
+    tmux
   ];
 
 }
